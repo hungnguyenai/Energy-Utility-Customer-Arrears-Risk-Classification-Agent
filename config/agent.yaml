@@ -1,0 +1,34 @@
+# Agent Manifest — AgentRegistry entry point
+# This file is required for AgentRegistry auto-discovery (lazy-load architecture)
+
+id: "ENE-C2-072"
+name: "Energy Utility Customer Arrears Risk Classification Agent"
+# Mirrors the value src/api/server.py passes to secrets_factory().
+namespace: "ene-c2-072"
+enabled: true
+version: "0.1.0"
+category: "Cat 2"
+industry: "ENE"
+
+# Node-backbone pattern (L2 retired) — base agent type reference
+base_type: "VectorRAGAgent"  # RAGAgent | ChatAgent | ReActAgent | DocGenerationAgent
+
+# Entry point
+class: "src.graph.graph.Graph"
+
+# Runtime configuration
+config:
+  max_retry: 3
+  timeout_seconds: 30
+  # kb_client: injected in production (template-owned versioned approved-corpus
+  # index); absent -> deterministic fallback corpus in src/services/service.py.
+  kb_client: null
+  s3_gate_enabled: true
+
+# Security
+required_trust_level: "INTERNAL"
+
+# Dependencies the agent requires (registry compile-time validation).
+requires:
+  extras: []
+  secrets: []
